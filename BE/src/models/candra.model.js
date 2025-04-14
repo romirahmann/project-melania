@@ -242,11 +242,12 @@ const getCandraWithout1007 = async (kodeChecklistList) => {
   let query = `
    SELECT 
     c.kode_checklist, 
+     
     p.nama_proses
-  FROM tblcandra c
-  LEFT JOIN tblproses p 
-      ON c.idproses = p.idproses
-  WHERE 
+FROM tblcandra c
+LEFT JOIN tblproses p 
+    ON c.idproses = p.idproses
+WHERE 
     c.kode_checklist IN (${checklistStr})
     AND (
         NOT EXISTS (
@@ -258,7 +259,7 @@ const getCandraWithout1007 = async (kodeChecklistList) => {
             SELECT 1 FROM tblcandra c3 
             WHERE c3.kode_checklist = c.kode_checklist 
             AND c3.idproses = '1007' 
-            AND CStr(c3.selesai) = '00:00:00'
+            AND FORMAT(c3.selesai, 'HH:mm:ss') = '00:00:00'
         )
         OR NOT EXISTS (
             SELECT 1 FROM tblcandra c4 
@@ -269,7 +270,7 @@ const getCandraWithout1007 = async (kodeChecklistList) => {
             SELECT 1 FROM tblcandra c5 
             WHERE c5.kode_checklist = c.kode_checklist 
             AND c5.idproses = '1005' 
-            AND CStr(c5.selesai) = '00:00:00'
+            AND FORMAT(c5.selesai, 'HH:mm:ss') = '00:00:00'
         )
         OR NOT EXISTS (
             SELECT 1 FROM tblcandra c6 
@@ -280,21 +281,10 @@ const getCandraWithout1007 = async (kodeChecklistList) => {
             SELECT 1 FROM tblcandra c7 
             WHERE c7.kode_checklist = c.kode_checklist 
             AND c7.idproses = '1004' 
-            AND CStr(c7.selesai) = '00:00:00'
-        )
-        OR NOT EXISTS (
-            SELECT 1 FROM tblcandra c8 
-            WHERE c8.kode_checklist = c.kode_checklist 
-            AND c8.idproses = '1006'
-        )
-        OR EXISTS (
-            SELECT 1 FROM tblcandra c9 
-            WHERE c9.kode_checklist = c.kode_checklist 
-            AND c9.idproses = '1006' 
-            AND CStr(c9.selesai) = '00:00:00'
+            AND FORMAT(c7.selesai, 'HH:mm:ss') = '00:00:00'
         )
     )
-ORDER BY c.kode_checklist, c.idproses;
+GROUP BY c.kode_checklist, c.idproses, p.nama_proses;
 
 `;
   let result = await db.query(query);
