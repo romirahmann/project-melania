@@ -34,7 +34,7 @@ export function UpdatePage() {
   const fecthDataCandra = async () => {
     try {
       let res = await axios.get(`${baseUrl}/master/validate-proses`);
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setCandraNotComplete(res.data.data);
       setFilteredData(res.data.data);
     } catch (err) {
