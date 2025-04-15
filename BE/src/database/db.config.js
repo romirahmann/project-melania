@@ -2,9 +2,8 @@ const odbc = require("odbc");
 require("dotenv").config();
 const path = require("path");
 
-// Path absolut ke file MDB
-const dbDataPath = path.resolve(__dirname, "../database/dbData.mdb");
-// const dbDataPath = path.resolve("X:DBASE/dbData.mdb");
+// const dbDataPath = path.resolve(__dirname, "../database/dbData.mdb");
+const dbDataPath = path.resolve(process.env.DB_PATH);
 // console.log(dbDataPath);
 const dbPassword = process.env.DB_PASSWORD || "";
 
