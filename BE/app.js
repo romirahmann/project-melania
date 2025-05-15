@@ -30,7 +30,7 @@ Promise.all([connectDB(), connectDB2()])
     app.get("/", (req, res) => {
       res.status(200).json({
         status: true,
-        service: "Backend Project RS-HARKIT Starter Kit with WebSocket",
+        service: "Backend Project RS-MELANIA Starter Kit with WebSocket",
       });
     });
 
