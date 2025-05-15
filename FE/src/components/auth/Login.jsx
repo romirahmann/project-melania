@@ -32,9 +32,12 @@ export function Login() {
           // console.log(res.data.data);
           const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
 
-          localStorage.setItem("token", res.data.data.token);
-          localStorage.setItem("expiresAt", expiresAt);
-          localStorage.setItem("userData", JSON.stringify(res.data.data.user));
+          sessionStorage.setItem("token", res.data.data.token);
+          sessionStorage.setItem("expiresAt", expiresAt);
+          sessionStorage.setItem(
+            "userData",
+            JSON.stringify(res.data.data.user)
+          );
           setAllert(true);
           setTimeout(() => {
             setAllert(false);
