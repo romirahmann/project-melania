@@ -44,7 +44,7 @@ export function ScanPage() {
   });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userData"));
+    const user = JSON.parse(sessionStorage.getItem("userData"));
     setUserLogin(user);
   }, []);
 
