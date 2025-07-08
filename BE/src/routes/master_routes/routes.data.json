@@ -5,7 +5,7 @@
     "controller": "UserController.register"
   },
   {
-    "path": "/users",
+    "path": "/users/",
     "method": "get",
     "controller": "UserController.getUsers"
   },
@@ -13,6 +13,11 @@
     "path": "/user/:id",
     "method": "put",
     "controller": "UserController.updateUser"
+  },
+  {
+    "path": "/user-filter/:query",
+    "method": "get",
+    "controller": "UserController.getUserFilter"
   },
   {
     "path": "/user/:id",

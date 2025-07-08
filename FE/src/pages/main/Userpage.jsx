@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { TableUser } from "../../components/user/TableUser";
@@ -11,6 +12,8 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { AlertMessage } from "../../shared/AlertMessage";
 import { AddModalUser } from "../../components/modal/AddModalUser";
 import { AddLog } from "../../services/log.service";
+import { EditModalUser } from "../../components/modal/EditModalUser";
+import { ModalDelete } from "../../shared/ModalDeleted";
 
 export function Userpage() {
   const [users, setUsers] = useState([]);
@@ -21,7 +24,13 @@ export function Userpage() {
     message: "",
     type: "",
   });
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({
+    show: false,
+    type: "",
+    data: null,
+  });
+
+  const [resetChecklist, setResetChecklist] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -29,14 +38,32 @@ export function Userpage() {
 
   const fetchUser = async () => {
     try {
-      const res = await api.get(`/master/users`);
+      const res = await api.get(`/master/users/`);
       setUsers(res.data.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-  const handleSearch = () => {};
+
+  const handleSearch = async (query) => {
+    try {
+      let res;
+
+      if (query.trim() === "") {
+        // 👇 Jika kosong, ambil semua data
+        res = await api.get("/master/users");
+      } else {
+        // 👇 Jika ada query, pakai endpoint filter
+        res = await api.get(`/master/user-filter/${query}`);
+      }
+
+      setUsers(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSelectedData = (val) => {
     setSelcetedData(val);
@@ -45,21 +72,49 @@ export function Userpage() {
   const handleAction = (type) => {
     switch (type) {
       case "ADD":
-        setShowModal(true);
+        setShowModal({
+          show: true,
+          type: "ADD",
+          data: null,
+        });
         break;
       case "EDIT":
-        if (selectedData.length > 1) {
+        if (selectedData.length > 1 || selectedData.length === 0) {
           setAlert({
             show: true,
-            message: "Please select only one user to edit",
+            message:
+              selectedData.length === 0
+                ? "Please select a user to edit"
+                : "Please select only one user to edit",
             type: "warning",
           });
+          return;
         }
+        console.log(selectedData[0]);
+        setShowModal({
+          show: true,
+          type: "EDIT",
+          data: selectedData[0],
+        });
 
-        console.log("EDIT");
         break;
       case "DELETE":
-        console.log("DELETE");
+        if (selectedData.length > 1 || selectedData.length === 0) {
+          setAlert({
+            show: true,
+            message:
+              selectedData.length === 0
+                ? "Please select a user to edit"
+                : "Please select only one user to edit",
+            type: "warning",
+          });
+          return;
+        }
+        setShowModal({
+          show: true,
+          type: "DELETE",
+          data: selectedData[0],
+        });
         break;
 
       default:
@@ -70,7 +125,11 @@ export function Userpage() {
   const handleAdd = async (formData) => {
     try {
       await api.post("/master/register", formData);
-      setShowModal(false);
+      setShowModal({
+        show: false,
+        type: "",
+        data: null,
+      });
       fetchUser();
       setAlert({
         show: true,
@@ -87,6 +146,59 @@ export function Userpage() {
       console.log(error);
     }
   };
+
+  const handleEdit = async (formData) => {
+    try {
+      await api.put(`/master/user/${selectedData[0].id}`, formData);
+      setShowModal({
+        show: false,
+        type: "",
+        data: null,
+      });
+      fetchUser();
+      setResetChecklist(true);
+      setAlert({
+        show: true,
+        message: "User edit successfully",
+        type: "success",
+      });
+      AddLog(`${formData.username} menambahkan user ${formData.username} !`);
+    } catch (error) {
+      setAlert({
+        show: true,
+        message: "User added failure!",
+        type: "error",
+      });
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (formData) => {
+    try {
+      await api.delete(`/master/user/${selectedData[0].id}`);
+      setShowModal({
+        show: false,
+        type: "",
+        data: null,
+      });
+      fetchUser();
+      setResetChecklist(true);
+      setAlert({
+        show: true,
+        message: "User Deleted successfully",
+        type: "success",
+      });
+      AddLog(`${formData.username} deleted user ${formData.username} !`);
+    } catch (error) {
+      setAlert({
+        show: true,
+        message: "User deleted failure!",
+        type: "error",
+      });
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="max-w-full">
@@ -131,6 +243,7 @@ export function Userpage() {
                 selectedData={(selectedUser) =>
                   handleSelectedData(selectedUser)
                 }
+                resetChecklist={resetChecklist}
               />
             </div>
           </div>
@@ -138,9 +251,38 @@ export function Userpage() {
       </div>
       <div>
         <AddModalUser
-          isOpen={showModal}
+          isOpen={showModal.type === "ADD"}
           onSubmit={handleAdd}
-          onClose={() => (showModal ? setShowModal(false) : setShowModal(true))}
+          onClose={() =>
+            showModal.show
+              ? setShowModal({
+                  show: false,
+                  type: "",
+                  data: null,
+                })
+              : setShowModal({
+                  show: true,
+                  type: "ADD",
+                  data: null,
+                })
+          }
+        />
+        <EditModalUser
+          isOpen={showModal.type === "EDIT"}
+          onSubmit={handleEdit}
+          data={showModal.data ? showModal.data : null}
+          onClose={() =>
+            setShowModal({
+              show: false,
+              type: "",
+              data: null,
+            })
+          }
+        />
+        <ModalDelete
+          isOpen={showModal.type === "DELETE"}
+          onDelete={handleDelete}
+          onClose={() => setShowModal({ show: false, type: "", data: null })}
         />
       </div>
       <div>

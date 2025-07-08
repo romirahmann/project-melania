@@ -12,7 +12,7 @@ export function Search({
 
   const handleChange = (e) => {
     setQuery(e.target.value);
-    onChange(e);
+    onChange(e.target.value);
   };
 
   return (

@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
-import moment from "moment";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Table } from "../../shared/Table";
 
-export function TableUser({
+/* eslint-disable no-unused-vars */
+export function TableTarget({
   data = [],
-  selectedData,
+  selectedData = [],
   filter = [],
   resetChecklist,
 }) {
@@ -56,9 +55,8 @@ export function TableUser({
         />
       ),
     },
-    { header: "Username", key: "username" },
-    { header: "Email", key: "email" },
-    { header: "Jabatan", key: "jabatan" },
+    { header: "Rincian Target", key: "nama" },
+    { header: "Nilai", key: "nilai" },
   ];
 
   return (

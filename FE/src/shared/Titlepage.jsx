@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { Search } from "./SearchComponent";
+import { Search } from "./Search";
 
 export function Titlepage({ title, icon: Icon, onSearch }) {
   return (

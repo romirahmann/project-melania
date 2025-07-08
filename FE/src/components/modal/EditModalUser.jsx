@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
+import { Modal } from "../../shared/Modal";
 
 export function EditModalUser({ isOpen, data, onClose, onSubmit }) {
   const [formData, setFormData] = useState({
+    id: "",
     username: "",
     email: "",
     jabatan: "",
     password: "",
+    trn_date: "",
   });
 
   useEffect(() => {
-    setFormData({
-      username: data.username,
-      email: data.email,
-      jabatan: data.jabatan,
-      password: data.password,
-    });
+    if (data) {
+      setFormData({
+        id: data.id,
+        username: data.username || "",
+        email: data.email || "",
+        jabatan: data.jabatan || "User",
+        password: data.password,
+        trn_date: data.trn_date,
+      });
+    }
   }, [data]);
 
   const handleChange = (e) => {
@@ -97,23 +104,6 @@ export function EditModalUser({ isOpen, data, onClose, onSubmit }) {
                 <option value="User">User</option>
                 <option value="Leader">Leader</option>
               </select>
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-900 "
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-lg "
-                required
-              />
             </div>
           </div>
 
