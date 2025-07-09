@@ -51,10 +51,8 @@ export function Userpage() {
       let res;
 
       if (query.trim() === "") {
-        // 👇 Jika kosong, ambil semua data
         res = await api.get("/master/users");
       } else {
-        // 👇 Jika ada query, pakai endpoint filter
         res = await api.get(`/master/user-filter/${query}`);
       }
 

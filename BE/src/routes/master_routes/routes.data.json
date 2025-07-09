@@ -85,6 +85,11 @@
     "controller": "TargetController.getAllTargets"
   },
   {
+    "path": "/target-filter/:query",
+    "method": "get",
+    "controller": "TargetController.getTargetFilter"
+  },
+  {
     "path": "/target/:id",
     "method": "get",
     "controller": "TargetController.getTargetById"

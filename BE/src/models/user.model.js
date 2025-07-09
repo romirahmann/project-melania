@@ -1,10 +1,5 @@
 const { getDB } = require("../database/db.config");
 
-// const getAllUsers = async () => {
-//   const db = getDB();
-//   const result = await db.query("SELECT * FROM Users");
-//   return result;
-// };
 const getAllUsers = async (q = "") => {
   const db = getDB();
   let query = "SELECT * FROM Users";

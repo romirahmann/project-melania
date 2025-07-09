@@ -11,6 +11,14 @@ import { Dashboard } from "../pages/main/Dashboard";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { Userpage } from "../pages/main/Userpage";
 import { Targetpage } from "../pages/main/Targetpage";
+import { Boxpage } from "../pages/main/Boxpage";
+import { Prosespage } from "../pages/main/Prosespage";
+import { Employeepage } from "../pages/main/Employeepage";
+import { KCPpageA2 } from "../pages/main/KCPpageA2";
+import { KCPpage } from "../pages/main/KCPpage";
+import { Candrapage } from "../pages/main/Candrapage";
+import { Nonaktifpage } from "../pages/main/Nonaktifpage";
+import { MRpage } from "../pages/main/MRpage";
 
 const rootRoute = createRootRoute({
   notFoundComponent: NotFound,
@@ -51,9 +59,65 @@ const targetpage = createRoute({
   component: Targetpage,
 });
 
+const boxpage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/box-page",
+  component: Boxpage,
+});
+
+const dataproses = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/data-proses",
+  component: Prosespage,
+});
+
+const datakaryawan = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/data-karyawan",
+  component: Employeepage,
+});
+const kcppagea2 = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/data-kcp-a2",
+  component: KCPpageA2,
+});
+const kcppage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/data-kcp",
+  component: KCPpage,
+});
+
+const nonaktifpage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/nonaktifMR",
+  component: Nonaktifpage,
+});
+const mrpage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/data-mr",
+  component: MRpage,
+});
+
+const candrapage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/data-candra",
+  component: Candrapage,
+});
+
 const routeTree = rootRoute.addChildren([
   protectedLayout,
-  mainLayout.addChildren([dashboardpage, userpage, targetpage]),
+  mainLayout.addChildren([
+    dashboardpage,
+    userpage,
+    targetpage,
+    dataproses,
+    datakaryawan,
+    kcppagea2,
+    kcppage,
+    nonaktifpage,
+    mrpage,
+    candrapage,
+  ]),
   authLayout,
 ]);
 

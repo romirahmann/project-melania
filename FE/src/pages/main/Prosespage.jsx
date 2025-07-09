@@ -1,19 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { IoAddCircleOutline } from "react-icons/io5";
-import { LazyComponent } from "../../shared/LazyComponent";
+import { useEffect, useState } from "react";
 import { Titlepage } from "../../shared/Titlepage";
 import { TbTargetArrow } from "react-icons/tb";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTasks } from "react-icons/fa";
+import { LazyComponent } from "../../shared/LazyComponent";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
-import { useEffect, useState } from "react";
 import api from "../../services/axios.service";
-import { TableTarget } from "../../components/target/TableTarget";
-import { TargetAction } from "../../components/target/TargetAction";
-import { AlertMessage } from "../../shared/AlertMessage";
 
-export function Targetpage() {
+export function Prosespage() {
   const [isLoading, setLoading] = useState(true);
-  const [targets, setTarget] = useState([]);
+  const [proses, setProses] = useState([]);
   const [showModal, setShowModal] = useState({
     show: false,
     type: "",
@@ -26,40 +23,21 @@ export function Targetpage() {
   });
   const [selectedData, setSelcetedData] = useState([]);
   const [resetChecklist, setResetChecklist] = useState(false);
+
   useEffect(() => {
-    fetchTargets();
+    fetchProses();
   }, []);
-
-  const fetchTargets = async () => {
+  const fetchProses = async () => {
     try {
-      const res = await api.get(`/master/targets`);
-      setTarget(res.data.data);
+      const res = await api.get("/master/prosess");
+      setProses(res.data.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSelectedData = (val) => {
-    setSelcetedData(val);
-  };
-
-  const handleSearch = async (query) => {
-    try {
-      let res;
-
-      if (query.trim() === "") {
-        res = await api.get("/master/targets");
-      } else {
-        res = await api.get(`/master/target-filter/${query}`);
-      }
-
-      setTarget(res.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleSearch = () => {};
   const handleAction = (type) => {
     switch (type) {
       case "ADD":
@@ -103,29 +81,15 @@ export function Targetpage() {
         break;
     }
   };
-
-  const handleOnAction = (val) => {
-    fetchTargets();
-    setSelcetedData([]);
-    setAlert({
-      show: true,
-      message: val,
-      type: "success",
-    });
-    setShowModal({
-      show: false,
-      type: "",
-      data: null,
-    });
-    setResetChecklist(true);
+  const handleSelectedData = (val) => {
+    setSelcetedData(val);
   };
-
   return (
     <>
       <div className="w-max-full">
         <Titlepage
-          title={`Data Target`}
-          icon={TbTargetArrow}
+          title={`Data Proses`}
+          icon={FaTasks}
           onSearch={handleSearch}
         />
         {isLoading ? (
@@ -158,45 +122,9 @@ export function Targetpage() {
                 </button>
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg">
-              <TableTarget
-                data={targets}
-                selectedData={(val) => handleSelectedData(val)}
-                resetChecklist={resetChecklist}
-              />
-            </div>
+            <div className="bg-white p-3 rounded-lg"></div>
           </div>
         )}
-
-        <TargetAction
-          isOpen={showModal.show}
-          type={showModal.type}
-          data={showModal.data}
-          onClose={() =>
-            setShowModal({
-              show: false,
-              type: "",
-              data: null,
-            })
-          }
-          onAction={handleOnAction}
-        />
-
-        <div>
-          {alert.show && (
-            <AlertMessage
-              type={alert.type}
-              message={alert.message}
-              onClose={() =>
-                setAlert({
-                  show: false,
-                  type: "",
-                  message: "",
-                })
-              }
-            />
-          )}
-        </div>
       </div>
     </>
   );

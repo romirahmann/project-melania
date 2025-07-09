@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { IoAddCircleOutline } from "react-icons/io5";
-import { LazyComponent } from "../../shared/LazyComponent";
+import { FaEdit, FaTasks, FaUsers } from "react-icons/fa";
 import { Titlepage } from "../../shared/Titlepage";
-import { TbTargetArrow } from "react-icons/tb";
-import { FaEdit } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
 import { useEffect, useState } from "react";
 import api from "../../services/axios.service";
-import { TableTarget } from "../../components/target/TableTarget";
-import { TargetAction } from "../../components/target/TargetAction";
-import { AlertMessage } from "../../shared/AlertMessage";
+import { LazyComponent } from "../../shared/LazyComponent";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { MdDeleteForever } from "react-icons/md";
 
-export function Targetpage() {
+export function Employeepage() {
   const [isLoading, setLoading] = useState(true);
-  const [targets, setTarget] = useState([]);
+  const [employee, setEmployee] = useState([]);
   const [showModal, setShowModal] = useState({
     show: false,
     type: "",
@@ -26,40 +22,23 @@ export function Targetpage() {
   });
   const [selectedData, setSelcetedData] = useState([]);
   const [resetChecklist, setResetChecklist] = useState(false);
+
   useEffect(() => {
-    fetchTargets();
+    fetchProses();
   }, []);
 
-  const fetchTargets = async () => {
+  const fetchProses = async () => {
     try {
-      const res = await api.get(`/master/targets`);
-      setTarget(res.data.data);
+      const res = await api.get("/master/employees");
+      setEmployee(res.data.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSelectedData = (val) => {
-    setSelcetedData(val);
-  };
+  const handleSearch = () => {};
 
-  const handleSearch = async (query) => {
-    try {
-      let res;
-
-      if (query.trim() === "") {
-        res = await api.get("/master/targets");
-      } else {
-        res = await api.get(`/master/target-filter/${query}`);
-      }
-
-      setTarget(res.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const handleAction = (type) => {
     switch (type) {
       case "ADD":
@@ -75,7 +54,7 @@ export function Targetpage() {
             show: true,
             message:
               selectedData.length === 0
-                ? "Please select a target to edit"
+                ? "Please select a employee to edit"
                 : "Please select only one edit to edit",
             type: "warning",
           });
@@ -89,7 +68,7 @@ export function Targetpage() {
             show: true,
             message:
               selectedData.length === 0
-                ? "Please select a target to delete"
+                ? "Please select a employee to delete"
                 : "Please select only one edit to delete",
             type: "warning",
           });
@@ -103,29 +82,15 @@ export function Targetpage() {
         break;
     }
   };
-
-  const handleOnAction = (val) => {
-    fetchTargets();
-    setSelcetedData([]);
-    setAlert({
-      show: true,
-      message: val,
-      type: "success",
-    });
-    setShowModal({
-      show: false,
-      type: "",
-      data: null,
-    });
-    setResetChecklist(true);
+  const handleSelectedData = (val) => {
+    setSelcetedData(val);
   };
-
   return (
     <>
       <div className="w-max-full">
         <Titlepage
-          title={`Data Target`}
-          icon={TbTargetArrow}
+          title={`Data Karyawan`}
+          icon={FaUsers}
           onSearch={handleSearch}
         />
         {isLoading ? (
@@ -158,45 +123,9 @@ export function Targetpage() {
                 </button>
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg">
-              <TableTarget
-                data={targets}
-                selectedData={(val) => handleSelectedData(val)}
-                resetChecklist={resetChecklist}
-              />
-            </div>
+            <div className="bg-white p-3 rounded-lg"></div>
           </div>
         )}
-
-        <TargetAction
-          isOpen={showModal.show}
-          type={showModal.type}
-          data={showModal.data}
-          onClose={() =>
-            setShowModal({
-              show: false,
-              type: "",
-              data: null,
-            })
-          }
-          onAction={handleOnAction}
-        />
-
-        <div>
-          {alert.show && (
-            <AlertMessage
-              type={alert.type}
-              message={alert.message}
-              onClose={() =>
-                setAlert({
-                  show: false,
-                  type: "",
-                  message: "",
-                })
-              }
-            />
-          )}
-        </div>
       </div>
     </>
   );
