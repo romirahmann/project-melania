@@ -1,17 +1,14 @@
-/* eslint-disable no-unused-vars */
-
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Table } from "../../shared/Table";
 
-export function TableUser({
+/* eslint-disable no-unused-vars */
+export function TableEmployee({
   data = [],
-  selectedData,
+  selectedData = [],
   filter = [],
   resetChecklist,
 }) {
   const [selectedRows, setSelectedRows] = useState([]);
-
-  // ⛳️ Notifikasi ke parent setelah state berubah
   useEffect(() => {
     selectedData(selectedRows);
   }, [selectedRows]);
@@ -31,20 +28,9 @@ export function TableUser({
     }
   };
 
-  const handleSelectAll = (checked) => {
-    const updated = checked ? data : [];
-    setSelectedRows(updated);
-  };
-
   const columns = [
     {
-      header: (
-        <input
-          type="checkbox"
-          checked={selectedRows.length === data.length && data.length > 0}
-          onChange={(e) => handleSelectAll(e.target.checked)}
-        />
-      ),
+      header: "",
       key: "__checkbox",
       render: (_, row) => (
         <input
@@ -56,12 +42,13 @@ export function TableUser({
         />
       ),
     },
-    { header: "Username", key: "username" },
-    { header: "Email", key: "email" },
-    { header: "Jabatan", key: "jabatan" },
+    { header: "NIK", key: "nik" },
+    { header: "Nama Karyawan", key: "nama_karyawan" },
+    { header: "Submited By", key: "submittedby" },
   ];
-
   return (
-    <Table data={data} columns={columns} rowsPerPage={filter.perPage || 10} />
+    <>
+      <Table data={data} columns={columns} rowsPerPage={filter.perPage || 10} />
+    </>
   );
 }

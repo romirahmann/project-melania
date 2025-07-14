@@ -30,6 +30,11 @@
     "controller": "EmployeeController.getAllEmployee"
   },
   {
+    "path": "/employee-filter/:query",
+    "method": "get",
+    "controller": "EmployeeController.getSearchEmployee"
+  },
+  {
     "path": "/employee/:id",
     "method": "get",
     "controller": "EmployeeController.getEmployeeById"
@@ -58,6 +63,11 @@
     "path": "/prosess",
     "method": "get",
     "controller": "ProsesController.getAllProses"
+  },
+  {
+    "path": "/target-proses/:query",
+    "method": "get",
+    "controller": "ProsesController.getFilterProses"
   },
   {
     "path": "/proses/:idproses",

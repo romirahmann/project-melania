@@ -11,6 +11,18 @@ const getAllProses = async (req, res) => {
   }
 };
 
+const getFilterProses = async (req, res) => {
+  let { query } = req.params;
+  try {
+    console.log(query);
+    let data = await model.getAllProses(query || "");
+    return api.ok(res, data);
+  } catch (error) {
+    console.error("❌ Error getting proses:", error);
+    return api.error(res, "Failed to get proses", 500);
+  }
+};
+
 const getProsesById = async (req, res) => {
   const { idproses } = req.params;
   if (!idproses) {
@@ -80,13 +92,14 @@ const updateProses = async (req, res) => {
 
 const deleteProses = async (req, res) => {
   const { id } = req.params;
-
+  console.log(id);
   if (!id) {
     return api.error(res, "ID is required", 400);
   }
 
   try {
     const result = await model.deleteProses(id);
+    console.log(result);
     if (result > 0) {
       return api.ok(res, "Proses successfully deleted");
     }
@@ -103,4 +116,5 @@ module.exports = {
   createProses,
   updateProses,
   deleteProses,
+  getFilterProses,
 };

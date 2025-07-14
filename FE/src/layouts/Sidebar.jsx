@@ -137,11 +137,11 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen, userLogin }) {
                     label="Data KCP"
                     icon={<BsClipboardData />}
                   />
-                  <SidebarSubItem
+                  {/* <SidebarSubItem
                     to="/data-kcp-a2"
                     label="Data KCP A2"
                     icon={<BsClipboardData />}
-                  />
+                  /> */}
                   <SidebarSubItem
                     to="/data-karyawan"
                     label="Data Karyawan"

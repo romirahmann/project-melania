@@ -16,11 +16,11 @@ export function Topbar({
           className="w-8"
           alt="Logo"
         />
-        <span className="ms-2 text-2xl font-bold">CANDRA</span>
+        <span className="ms-2 md:text-2xl font-bold">CANDRA</span>
       </span>
       <div className="relative">
         <div className="iconUser flex items-center">
-          <p className="text-md font-semibold uppercase me-4">
+          <p className="text-sm md:text-md font-semibold uppercase me-4">
             {userLogin?.username}
           </p>
           <button onClick={() => setIsUserPopupOpen(!isUserPopupOpen)}>
@@ -29,7 +29,7 @@ export function Topbar({
         </div>
         {isUserPopupOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg p-4">
-            <p className="text-md font-semibold uppercase ">
+            <p className="text-sm md:text-md font-semibold uppercase ">
               {userLogin?.username}
             </p>
             <p className="text-sm text-gray-500">{userLogin?.jabatan}</p>

@@ -76,7 +76,7 @@ export function Targetpage() {
             message:
               selectedData.length === 0
                 ? "Please select a target to edit"
-                : "Please select only one edit to edit",
+                : "Please select only one target to edit",
             type: "warning",
           });
           return;
@@ -90,7 +90,7 @@ export function Targetpage() {
             message:
               selectedData.length === 0
                 ? "Please select a target to delete"
-                : "Please select only one edit to delete",
+                : "Please select only one target to delete",
             type: "warning",
           });
           return;

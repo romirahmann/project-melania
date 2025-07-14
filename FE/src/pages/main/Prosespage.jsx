@@ -7,6 +7,10 @@ import { LazyComponent } from "../../shared/LazyComponent";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import api from "../../services/axios.service";
+import { Tableproses } from "../../components/proses/Tableproses";
+import { AlertMessage } from "../../shared/AlertMessage";
+import { TargetAction } from "../../components/target/TargetAction";
+import { ProsesAction } from "../../components/proses/ProsesAction";
 
 export function Prosespage() {
   const [isLoading, setLoading] = useState(true);
@@ -37,7 +41,22 @@ export function Prosespage() {
     }
   };
 
-  const handleSearch = () => {};
+  const handleSearch = async (query) => {
+    try {
+      let res;
+
+      if (query.trim() === "") {
+        res = await api.get("/master/prosess");
+      } else {
+        res = await api.get(`/master/target-proses/${query}`);
+      }
+
+      setProses(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleAction = (type) => {
     switch (type) {
       case "ADD":
@@ -53,8 +72,8 @@ export function Prosespage() {
             show: true,
             message:
               selectedData.length === 0
-                ? "Please select a target to edit"
-                : "Please select only one edit to edit",
+                ? "Please select a proses to edit"
+                : "Please select only one proses to edit",
             type: "warning",
           });
           return;
@@ -67,8 +86,8 @@ export function Prosespage() {
             show: true,
             message:
               selectedData.length === 0
-                ? "Please select a target to delete"
-                : "Please select only one edit to delete",
+                ? "Please select a proses to delete"
+                : "Please select only one proses to delete",
             type: "warning",
           });
           return;
@@ -83,6 +102,22 @@ export function Prosespage() {
   };
   const handleSelectedData = (val) => {
     setSelcetedData(val);
+  };
+  const handleOnAction = (val) => {
+    fetchProses();
+
+    setAlert({
+      show: true,
+      message: val,
+      type: "success",
+    });
+    setShowModal({
+      show: false,
+      type: "",
+      data: null,
+    });
+    setSelcetedData([]);
+    setResetChecklist(true);
   };
   return (
     <>
@@ -122,8 +157,42 @@ export function Prosespage() {
                 </button>
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg"></div>
+            <div className="bg-white p-3 rounded-lg">
+              <Tableproses
+                data={proses}
+                selectedData={(val) => handleSelectedData(val)}
+                resetChecklist={resetChecklist}
+              />
+            </div>
           </div>
+        )}
+      </div>
+      <ProsesAction
+        isOpen={showModal.show}
+        type={showModal.type}
+        data={showModal.data}
+        onClose={() =>
+          setShowModal({
+            show: false,
+            type: "",
+            data: null,
+          })
+        }
+        onAction={handleOnAction}
+      />
+      <div>
+        {alert.show && (
+          <AlertMessage
+            type={alert.type}
+            message={alert.message}
+            onClose={() =>
+              setAlert({
+                show: false,
+                type: "",
+                message: "",
+              })
+            }
+          />
         )}
       </div>
     </>

@@ -6,6 +6,9 @@ import api from "../../services/axios.service";
 import { LazyComponent } from "../../shared/LazyComponent";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
+import { TableEmployee } from "../../components/employee/TableEmployee";
+import { AlertMessage } from "../../shared/AlertMessage";
+import { EmployeeAction } from "../../components/employee/EmployeeAction";
 
 export function Employeepage() {
   const [isLoading, setLoading] = useState(true);
@@ -37,7 +40,22 @@ export function Employeepage() {
     }
   };
 
-  const handleSearch = () => {};
+  const handleSearch = async (query) => {
+    try {
+      let res;
+
+      if (query.trim() === "") {
+        res = await api.get("/master/employees");
+      } else {
+        res = await api.get(`/master/employee-filter/${query}`);
+      }
+
+      setEmployee(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleAction = (type) => {
     switch (type) {
@@ -82,6 +100,22 @@ export function Employeepage() {
         break;
     }
   };
+  const handleOnAction = (val) => {
+    fetchProses();
+
+    setAlert({
+      show: true,
+      message: val,
+      type: "success",
+    });
+    setShowModal({
+      show: false,
+      type: "",
+      data: null,
+    });
+    setSelcetedData([]);
+    setResetChecklist(true);
+  };
   const handleSelectedData = (val) => {
     setSelcetedData(val);
   };
@@ -123,9 +157,47 @@ export function Employeepage() {
                 </button>
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg"></div>
+            <div className="bg-white p-3 rounded-lg">
+              <TableEmployee
+                data={employee}
+                selectedData={(selectedUser) =>
+                  handleSelectedData(selectedUser)
+                }
+                resetChecklist={resetChecklist}
+              />
+            </div>
           </div>
         )}
+        <div>
+          <EmployeeAction
+            isOpen={showModal.show}
+            type={showModal.type}
+            data={showModal.data}
+            onClose={() =>
+              setShowModal({
+                show: false,
+                type: "",
+                data: null,
+              })
+            }
+            onAction={handleOnAction}
+          />
+        </div>
+        <div>
+          {alert.show && (
+            <AlertMessage
+              type={alert.type}
+              message={alert.message}
+              onClose={() =>
+                setAlert({
+                  show: false,
+                  type: "",
+                  message: "",
+                })
+              }
+            />
+          )}
+        </div>
       </div>
     </>
   );

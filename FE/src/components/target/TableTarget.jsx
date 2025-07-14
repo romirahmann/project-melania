@@ -37,13 +37,7 @@ export function TableTarget({
 
   const columns = [
     {
-      header: (
-        <input
-          type="checkbox"
-          checked={selectedRows.length === data.length && data.length > 0}
-          onChange={(e) => handleSelectAll(e.target.checked)}
-        />
-      ),
+      header: "",
       key: "__checkbox",
       render: (_, row) => (
         <input
