@@ -1,12 +1,13 @@
 import api from "../../services/axios.service";
 import { Modal } from "../../shared/Modal";
-import { ModalDelete } from "../../shared/ModalDeleted";
+
+import { EditMR } from "./EditMR";
 
 /* eslint-disable no-unused-vars */
-export function KcpAction({ isOpen, type, data, onClose, onAction }) {
+export function MRAction({ isOpen, type, data, onClose, onAction }) {
   const handleDeleted = async () => {
     try {
-      await api.delete(`/master/dataMRt3/${data.id}`);
+      await api.delete(`/master/datamr/${data.NoUrut}/${data.Kode_Checklist}`);
       onAction("Deleted Proses Successfully!");
     } catch (error) {
       console.log(error);
@@ -14,9 +15,13 @@ export function KcpAction({ isOpen, type, data, onClose, onAction }) {
   };
   return (
     <>
-      <Modal isOpen={isOpen} title={`${type} KCP`} onClose={onClose}>
-        {type === "ADD" && <AddProses onAdd={onAction} />}
-        {type === "EDIT" && <EditProses data={data} onEdit={onAction} />}
+      <Modal isOpen={isOpen} title={`${type} MR`} onClose={onClose}>
+        {type === "NONACTIVE" && (
+          <EditMR data={data} onEdit={onAction} onClose={onClose} />
+        )}
+        {type === "EDIT" && (
+          <EditMR data={data} onEdit={onAction} onClose={onClose} />
+        )}
         {type === "DELETE" && (
           <ModalDelete
             isOpen={isOpen}

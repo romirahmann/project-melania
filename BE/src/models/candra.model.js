@@ -162,6 +162,7 @@ const updateCandra = async (kode_checklist, idproses, data) => {
     editby,
   } = data;
   const formattedTanggal = tanggal ? `#${tanggal}#` : "NULL";
+
   const query = `
     UPDATE tblcandra
     SET nik = '${nik}', nama_proses = '${nama_proses}', 
@@ -173,6 +174,7 @@ const updateCandra = async (kode_checklist, idproses, data) => {
   `;
 
   const result = await db.query(query);
+
   return result.count; // ✅ Return jumlah baris yang diperbarui
 };
 
