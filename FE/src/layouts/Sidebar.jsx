@@ -122,11 +122,11 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen, userLogin }) {
                     label="DATA MR"
                     icon={<IoDocumentsSharp />}
                   />
-                  <SidebarSubItem
+                  {/* <SidebarSubItem
                     to="/nonaktifMR"
                     label="DATA NONAKTIF"
                     icon={<AiFillStop />}
-                  />
+                  /> */}
                   <SidebarSubItem
                     to="/data-candra"
                     label="Data Candra"

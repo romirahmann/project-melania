@@ -19,6 +19,7 @@ import { KCPpage } from "../pages/main/KCPpage";
 import { Candrapage } from "../pages/main/Candrapage";
 import { Nonaktifpage } from "../pages/main/Nonaktifpage";
 import { MRpage } from "../pages/main/MRpage";
+import { ScanningPage } from "../pages/main/ScanningPage";
 
 const rootRoute = createRootRoute({
   notFoundComponent: NotFound,
@@ -104,6 +105,12 @@ const candrapage = createRoute({
   component: Candrapage,
 });
 
+const scanpage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/scanning",
+  component: ScanningPage,
+});
+
 const routeTree = rootRoute.addChildren([
   protectedLayout,
   mainLayout.addChildren([
@@ -117,6 +124,7 @@ const routeTree = rootRoute.addChildren([
     nonaktifpage,
     mrpage,
     candrapage,
+    scanpage,
   ]),
   authLayout,
 ]);

@@ -22,6 +22,21 @@ const getAllDataMR = async (req, res) => {
     return api.error(res, "Failed to get DataMR", 500);
   }
 };
+
+const getFilterDataMR = async (req, res) => {
+  let { query } = req.params;
+  try {
+    const data = await model.getAllDataMR(query);
+    // data.sort((a, b) => {
+    //   const getNumber = (str) => parseInt(str.replace("PBL-", ""), 10);
+    //   return getNumber(a.NoUrut) - getNumber(b.NoUrut);
+    // });
+    return api.ok(res, data);
+  } catch (error) {
+    console.error("❌ Error getting DataMR:", error);
+    return api.error(res, "Failed to get DataMR", 500);
+  }
+};
 const getAllNonaktifMR = async (req, res) => {
   try {
     const data = await model.getAllNonaktifMR();
@@ -43,6 +58,30 @@ const getAllNonaktifMR = async (req, res) => {
     return api.error(res, "Failed to get DataMR", 500);
   }
 };
+
+const getNonactiveMRFilter = async (req, res) => {
+  let { query } = req.params;
+  try {
+    const data = await model.getAllNonaktifMR(query);
+    data.sort((a, b) => {
+      const aParts = a.NoUrut.split("-").map((num) => parseInt(num, 10));
+      const bParts = b.NoUrut.split("-").map((num) => parseInt(num, 10));
+
+      // Urutkan berdasarkan angka setelah "PBL-"
+      if (aParts[1] !== bParts[1]) {
+        return aParts[1] - bParts[1];
+      }
+
+      // Jika sama, urutkan berdasarkan angka terakhir setelah "PBL-X-"
+      return aParts[2] - bParts[2];
+    });
+    return api.ok(res, data);
+  } catch (error) {
+    console.error("❌ Error getting DataMR:", error);
+    return api.error(res, "Failed to get DataMR", 500);
+  }
+};
+
 const getDataMRByKeys = async (req, res) => {
   let { nourut, kode_checklist } = req.params;
 
@@ -852,4 +891,6 @@ module.exports = {
   getAllNonaktifMR,
   nonaktifMR,
   aktifkanMR,
+  getFilterDataMR,
+  getNonactiveMRFilter,
 };

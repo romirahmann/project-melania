@@ -125,9 +125,19 @@
     "controller": "MrController.getAllDataMR"
   },
   {
+    "path": "/filter-datamr/:query",
+    "method": "get",
+    "controller": "MrController.getFilterDataMR"
+  },
+  {
     "path": "/nonaktif-mr",
     "method": "get",
     "controller": "MrController.getAllNonaktifMR"
+  },
+  {
+    "path": "/filter-nonaktif-mr/:query",
+    "method": "get",
+    "controller": "MrController.getNonactiveMRFilter"
   },
   {
     "path": "/aktif-mr",
