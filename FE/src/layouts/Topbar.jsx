@@ -9,7 +9,7 @@ export function Topbar({
   onLogout,
 }) {
   return (
-    <div className="flex justify-between items-center p-4 bg-white shadow-md backdrop-blur-sm">
+    <div className="flex relative z-[50] justify-between items-center p-4 bg-white shadow-md backdrop-blur-sm">
       <span className="flex items-center font-semibold">
         <img
           src="/RS-MELANIA/images/logo_candra.png"
@@ -28,7 +28,7 @@ export function Topbar({
           </button>
         </div>
         {isUserPopupOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg p-4">
+          <div className="absolute  right-0 mt-2 w-48 bg-white shadow-md rounded-lg p-4">
             <p className="text-sm md:text-md font-semibold uppercase ">
               {userLogin?.username}
             </p>

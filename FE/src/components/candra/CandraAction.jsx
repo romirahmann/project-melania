@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 import api from "../../services/axios.service";
 import { Modal } from "../../shared/Modal";
+import { ModalDelete } from "../../shared/ModalDeleted";
 import { EditCandra } from "./EditCandra";
 
-/* eslint-disable no-unused-vars */
 export function CandraAction({ isOpen, type, data, onClose, onAction }) {
   const handleDeleted = async () => {
     try {
-      await api.delete(`/master/employee/${data.id}`);
+      await api.delete(`/master/candra/${data.id}`);
       onAction("Deleted Proses Successfully!");
     } catch (error) {
       console.log(error);

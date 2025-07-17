@@ -1,9 +1,9 @@
 const moment = require("moment");
 const { getDB } = require("../database/db.config");
 
-const getAllCandra = async () => {
+const getAllCandra = async (q) => {
   const db = getDB();
-  const query = `
+  let query = `
     SELECT 
       id,
       kode_checklist, 
@@ -19,6 +19,10 @@ const getAllCandra = async () => {
       editBy
     FROM tblcandra
   `;
+  if (q) {
+    const safeQ = q.replace(/'/g, "''");
+    query += ` WHERE kode_checklist LIKE '${safeQ}%' OR idproses LIKE '${safeQ}%' OR nama_karyawan LIKE '${safeQ}%' OR nama_proses LIKE '${safeQ}%' `;
+  }
   const result = await db.query(query);
   return result;
 };
@@ -57,9 +61,9 @@ const dataExisting = async (kode_checklist, idproses) => {
   return result[0].count > 0;
 };
 
-const getAllByDateNow = async () => {
+const getAllByDateNow = async (q) => {
   const db = getDB();
-  const query = `
+  let query = `
     SELECT 
       id,
       kode_checklist, 
@@ -79,6 +83,10 @@ const getAllByDateNow = async () => {
     IIF(FORMAT(selesai, 'hh:nn:ss') = '00:00:00', 0, 1), 
     mulai DESC;
   `;
+  if (q) {
+    const safeQ = q.replace(/'/g, "''");
+    query += ` WHERE kode_checklist LIKE '${safeQ}%' OR idproses LIKE '${safeQ}%' OR nama_karyawan LIKE '${safeQ}%' OR nama_proses LIKE '${safeQ}%' `;
+  }
   const result = await db.query(query);
   return result;
 };

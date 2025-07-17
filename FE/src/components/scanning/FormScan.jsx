@@ -107,6 +107,23 @@ export function FormScan({ onAdd }) {
       }
     }
   };
+  const resetForm = () => {
+    setFormData((prev) => ({
+      kode_checklist: "",
+      idproses: isLocked ? prev.idproses : "",
+      nama_proses: isLocked ? prev.nama_proses : "",
+      qty_image: 0,
+      nik: isLocked ? prev.nik : "",
+      nama_karyawan: isLocked ? prev.nama_karyawan : "",
+      mulai: "",
+      selesai: "",
+      submittedby: "",
+      tanggal: "",
+    }));
+    setStep(1);
+    kodeChecklistRef.current?.focus();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -125,49 +142,21 @@ export function FormScan({ onAdd }) {
     try {
       await api.post(`/master/add-scan`, newFormData);
       onAdd("Add Proses Scanning Successfully!");
-      setFormData({
-        kode_checklist: "",
-        idproses: "",
-        nama_proses: "",
-        qty_image: 0,
-        nik: "",
-        nama_karyawan: "",
-        mulai: "",
-        selesai: "",
-        submittedby: "",
-        tanggal: "",
-      });
+      resetForm(); // gunakan resetForm saat sukses
     } catch (error) {
-      console.log(error.response.data.data);
-      let message = error.response.data.data.message;
+      console.log(error?.response?.data?.data || error);
+
+      const message =
+        error?.response?.data?.data?.message || "Gagal menambahkan data scan.";
 
       setAlert({
         show: true,
-        message: message,
+        message,
         type: "error",
       });
     }
-
-    if (!isLocked) {
-      setFormData({
-        kode_checklist: "",
-        idproses: "",
-        nama_proses: "",
-        qty_image: 0,
-        nik: "",
-        nama_karyawan: "",
-        mulai: "",
-        selesai: "",
-        submittedby: "",
-        tanggal: "",
-      });
-    } else {
-      setFormData((prev) => ({ ...prev, kode_checklist: "" }));
-    }
-
-    setStep(1);
-    kodeChecklistRef.current.focus();
   };
+
   return (
     <>
       <form className="space-y-3 p-4" onSubmit={handleSubmit}>

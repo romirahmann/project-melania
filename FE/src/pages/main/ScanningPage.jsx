@@ -5,10 +5,13 @@ import { FormScan } from "../../components/scanning/FormScan";
 import { useEffect, useState } from "react";
 import { TableScan } from "../../components/scanning/TableScan";
 import api from "../../services/axios.service";
+import { AlertMessage } from "../../shared/AlertMessage";
 
 export function ScanningPage() {
   const [dataCandra, setDataCandra] = useState([]);
-  const [filterProses, setFilterProses] = useState("ALL");
+  const [filterProses, setFilterProses] = useState(
+    sessionStorage.getItem("idproses") || "ALL"
+  );
   const [alert, setAlert] = useState({
     show: false,
     message: "",
@@ -17,6 +20,7 @@ export function ScanningPage() {
 
   useEffect(() => {
     fetchDataScanning();
+    console.log(filterProses);
   }, [filterProses]);
 
   const fetchDataScanning = async () => {
@@ -27,7 +31,7 @@ export function ScanningPage() {
       setDataCandra(
         filterProses === "ALL"
           ? data
-          : data.filter((item) => item.proses === filterProses)
+          : data.filter((item) => item.idproses === filterProses)
       );
     } catch (error) {
       console.log(error);
@@ -39,6 +43,7 @@ export function ScanningPage() {
   };
 
   const handleAdd = (val) => {
+    fetchDataScanning();
     setAlert({
       show: true,
       message: val,
@@ -46,7 +51,10 @@ export function ScanningPage() {
     });
   };
 
-  const handleSelectedProses = (value) => {};
+  const handleSelectedProses = (value) => {
+    sessionStorage.setItem("idproses", value);
+    setFilterProses(value);
+  };
 
   return (
     <>
@@ -64,9 +72,28 @@ export function ScanningPage() {
             <TableScan
               data={dataCandra}
               selectedProses={handleSelectedProses}
+              onAlert={(val) => {
+                setAlert({ show: true, message: val, type: "success" });
+                fetchDataScanning();
+              }}
             />
           </div>
         </div>
+      </div>
+      <div>
+        {alert.show && (
+          <AlertMessage
+            type={alert.type}
+            message={alert.message}
+            onClose={() =>
+              setAlert({
+                show: false,
+                type: "",
+                message: "",
+              })
+            }
+          />
+        )}
       </div>
     </>
   );

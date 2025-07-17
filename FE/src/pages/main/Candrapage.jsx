@@ -51,7 +51,7 @@ export function Candrapage() {
       if (query.trim() === "") {
         res = await api.get("/master/candras");
       } else {
-        res = await api.get(`/master/candra-filter/${query}`);
+        res = await api.get(`/master/filter-candra/${query}`);
       }
 
       setCandra(res.data.data);

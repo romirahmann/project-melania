@@ -180,6 +180,11 @@
     "controller": "CandraController.getAllCandra"
   },
   {
+    "path": "/filter-candra/:query",
+    "method": "get",
+    "controller": "CandraController.getFilterCandra"
+  },
+  {
     "path": "/candra-now",
     "method": "get",
     "controller": "CandraController.getAllCandraDayNow"

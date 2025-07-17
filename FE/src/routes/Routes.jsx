@@ -20,6 +20,7 @@ import { Candrapage } from "../pages/main/Candrapage";
 import { Nonaktifpage } from "../pages/main/Nonaktifpage";
 import { MRpage } from "../pages/main/MRpage";
 import { ScanningPage } from "../pages/main/ScanningPage";
+import { ChecksheetPage } from "../pages/main/ChecksheetPage";
 
 const rootRoute = createRootRoute({
   notFoundComponent: NotFound,
@@ -111,6 +112,12 @@ const scanpage = createRoute({
   component: ScanningPage,
 });
 
+const cheeksheetpage = createRoute({
+  getParentRoute: () => mainLayout,
+  path: "/checksheet",
+  component: ChecksheetPage,
+});
+
 const routeTree = rootRoute.addChildren([
   protectedLayout,
   mainLayout.addChildren([
@@ -125,6 +132,7 @@ const routeTree = rootRoute.addChildren([
     mrpage,
     candrapage,
     scanpage,
+    cheeksheetpage,
   ]),
   authLayout,
 ]);

@@ -36,7 +36,7 @@ export function CheecksheetPage() {
     try {
       let res = await axios.get(`${baseUrl}/master/datMRt3`);
       let data = res.data.data;
-      // console.log(data);
+
       setDataMRt(data);
       setFilteredData(data);
     } catch (error) {
