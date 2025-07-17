@@ -9,6 +9,7 @@ export function TableKCP({
   resetChecklist,
 }) {
   const [selectedRows, setSelectedRows] = useState([]);
+
   useEffect(() => {
     selectedData(selectedRows);
   }, [selectedRows]);
@@ -17,14 +18,17 @@ export function TableKCP({
     setSelectedRows([]);
   }, [resetChecklist]);
 
+  const isSameRow = (a, b) =>
+    a.NoUrut === b.NoUrut && a.Kode_Checklist === b.Kode_Checklist;
+
   const handleSelected = (row, checked) => {
     if (checked) {
       setSelectedRows((prev) => {
-        const isExist = prev.some((item) => item.id === row.id);
+        const isExist = prev.some((item) => isSameRow(item, row));
         return isExist ? prev : [...prev, row];
       });
     } else {
-      setSelectedRows((prev) => prev.filter((item) => item.id !== row.id));
+      setSelectedRows((prev) => prev.filter((item) => !isSameRow(item, row)));
     }
   };
 
@@ -35,7 +39,7 @@ export function TableKCP({
       render: (_, row) => (
         <input
           type="checkbox"
-          checked={selectedRows.some((item) => item.id === row.id)}
+          checked={selectedRows.some((item) => isSameRow(item, row))}
           onChange={(e) => {
             handleSelected(row, e.target.checked);
           }}
@@ -51,6 +55,7 @@ export function TableKCP({
     { header: "Periode Ranap", key: "Periode_Ranap" },
     { header: "Nama Dokumen", key: "namadokumen" },
   ];
+
   return (
     <>
       <Table columns={columns} data={data} rowsPerPage={filter.perPage || 10} />

@@ -10,6 +10,7 @@ import { TableKCP } from "../../components/kcp/TableKCP";
 import { AlertMessage } from "../../shared/AlertMessage";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import moment from "moment";
+import { KcpAction } from "../../components/kcp/KcpAction";
 
 export function KCPpage() {
   const [isLoading, setLoading] = useState(true);
@@ -51,7 +52,7 @@ export function KCPpage() {
       if (query.trim() === "") {
         res = await api.get("/master/datMRt3");
       } else {
-        res = await api.get(`/master/mrt3-filter/${query}`);
+        res = await api.get(`/master/filter-mrt3/${query}`);
       }
 
       setKcp(res.data.data);
@@ -198,6 +199,19 @@ export function KCPpage() {
                   handleSelectedData(selectedUser)
                 }
                 resetChecklist={resetChecklist}
+              />
+              <KcpAction
+                isOpen={showModal.show}
+                type={showModal.type}
+                data={showModal.data}
+                onClose={() =>
+                  setShowModal({
+                    show: false,
+                    type: "",
+                    data: null,
+                  })
+                }
+                onAction={handleOnAction}
               />
             </div>
           </div>

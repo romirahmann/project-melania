@@ -271,6 +271,11 @@
     "controller": "MrController.getAllDataMRt3"
   },
   {
+    "path": "/filter-mrt3/:query",
+    "method": "get",
+    "controller": "MrController.getFilterMRt3"
+  },
+  {
     "path": "/finishing-checksheet/:kode_checklist",
     "method": "get",
     "controller": "MrController.generateFinishinCheecksheet"

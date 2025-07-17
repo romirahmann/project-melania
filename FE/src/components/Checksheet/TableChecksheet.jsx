@@ -26,10 +26,8 @@ export function TableChecksheet({
       key: "Tanggal",
       render: (val) => moment(val.tanggal).format("DD-MM-YYYY"),
     },
-    { header: "QTY Image", key: "Qty_Image" },
-    { header: "Mulai", key: "Mulai" },
-    { header: "Selesai", key: "Selesai" },
-    { header: "File Path", key: "Filepath" },
+    { header: "Periode Ranap", key: "Periode_Ranap" },
+    { header: "Nama Dokumen", key: "namadokumen" },
   ];
   return (
     <>
