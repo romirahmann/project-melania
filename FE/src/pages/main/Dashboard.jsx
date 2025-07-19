@@ -5,6 +5,7 @@ import { Summary } from "../../components/dashboard/Summary";
 import { ChartUtama } from "../../components/dashboard/ChartUtama";
 import { TableRealTime } from "../../components/dashboard/TableRealTime";
 import { TargetChart } from "../../components/dashboard/TargetChart";
+import { CountFiles } from "../../components/dashboard/CountFiles";
 
 export function Dashboard() {
   const handleSearch = () => {};
@@ -22,6 +23,9 @@ export function Dashboard() {
         </div>
         <div className="summary p-2">
           <Summary />
+        </div>
+        <div className="countFIle ">
+          <CountFiles />
         </div>
         <div className="progressChart p-2">
           <ChartUtama />
